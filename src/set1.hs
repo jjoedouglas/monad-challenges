@@ -1,18 +1,27 @@
+{-# LANGUAGE MonadComprehensions #-}
+{-# LANGUAGE RebindableSyntax  #-}
+
+module Set1 where
+
 import MCPrelude
-import Data.List
 
 type Gen a = Seed -> (a, Seed)
 
 
 fiveRands :: [Integer]
-fiveRands = take 5 $ unfoldr (\b -> Just (rand b)) (mkSeed 1)
+fiveRands = [(fst r1), (fst r2), (fst r3), (fst r4), (fst r5)]
+  where r1 = rand (mkSeed 1)
+        r2 = rand (snd r1)
+        r3 = rand (snd r2)
+        r4 = rand (snd r3)
+        r5 = rand (snd r4)
 
 randLetter :: Gen Char
 randLetter seed = promoteToLetter $ rand seed
   where promoteToLetter (i, s) = (toLetter i, s)
 
 randLetter3 :: String
-randLetter3 = take 3 $ unfoldr(\seed -> Just (randLetter seed)) (mkSeed 1)
+randLetter3 = map toLetter $ take 3 $ fiveRands
 
 generalA :: Gen a -> (a -> b) -> Gen b
 generalA g f seed = promote $ g seed
