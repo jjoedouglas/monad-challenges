@@ -1,6 +1,9 @@
-import Prelude (product, sum)
-import MCPrelude
+{-# LANGUAGE MonadComprehensions #-}
+{-# LANGUAGE RebindableSyntax  #-}
 
+module Set2 where
+
+import MCPrelude
 
 data Maybe a = Nothing | Just a
 
